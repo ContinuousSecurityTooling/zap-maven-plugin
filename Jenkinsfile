@@ -52,7 +52,7 @@ timeout(60) {
                 }
             }
 
-            archiveArtifacts artifacts: '*/target/*.jar'
+            archiveArtifacts artifacts: 'target/*.jar'
             junit healthScaleFactor: 1.0, testResults: '*/target/surefire-reports/TEST*.xml'
         } catch (e) {
             mail subject: "${env.JOB_NAME} (${env.BUILD_NUMBER}): Error on build", to: 'github@martinreinhardt-online.de', body: "Please go to ${env.BUILD_URL}."
