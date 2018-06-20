@@ -26,7 +26,7 @@ timeout(60) {
                 checkout scm
             }
             stage('Build') {
-                sh "./mvnw package -DskipUnitTests=true"
+                sh "./mvnw clean package -DskipUnitTests=true"
             }
 
             stage('Unit-Tests') {
