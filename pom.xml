@@ -7,8 +7,8 @@
     <version>0.2.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
-    <name>ZAP Maven Plugin Parent</name>
-    <description>Parent project for the ZAP Maven Plugin</description>
+    <name>ZAP Maven Plugin</name>
+    <description>The Maven Plugin for OWASP ZAP</description>
     <url>https://github.com/ContinuousSecurityTooling/zap-maven-plugin</url>
 
 
