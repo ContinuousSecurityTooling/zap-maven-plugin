@@ -14,45 +14,46 @@ timeout(60) {
         def buildUrl = env.BUILD_URL
 
         try {
-            withEnv(["JAVA_HOME=${tool 'JDK8'}", "PATH+MAVEN=${tool 'Maven3'}/bin:${env.JAVA_HOME}/bin"]) {
 
-                // PRINT ENVIRONMENT TO JOB
-                echo "workspace directory is $workspace"
-                echo "build URL is $buildUrl"
-                echo "build Number is $buildNumber"
-                echo "branch name is $branchName"
-                echo "PATH is $env.PATH"
+            // PRINT ENVIRONMENT TO JOB
+            echo "workspace directory is $workspace"
+            echo "build URL is $buildUrl"
+            echo "build Number is $buildNumber"
+            echo "branch name is $branchName"
+            echo "PATH is $env.PATH"
 
-                stage('Checkout') {
-                    checkout scm
-                }
-                stage('Build') {
-                    sh "mvn package -DskipUnitTests=true"
-                }
-
-                stage('Unit-Tests') {
-                    // TODO sh "mvn test -Dmaven.test.failure.ignore"
-                }
-
-                stage('Integration-Tests') {
-                    // TODO add for OWASP ZAP version 2.7.0
-                }
-
-                stage('Deploy') {
-                    if (git.isProductionBranch()) {
-                        sh "mvn -Prelease package source:jar gpg:sign install:install deploy:deploy"
-                    } else {
-                        sh "mvn deploy"
-                    }
-
-                    stage('Sonar') {
-                        sh "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=hypery2k-github -Dsonar.login=${env['sonarcloud.io.token']}"
-                    }
-                }
-
-                archiveArtifacts artifacts: '*/target/*.jar'
-                junit healthScaleFactor: 1.0, testResults: '*/target/surefire-reports/TEST*.xml'
+            stage('Checkout') {
+                checkout scm
             }
+            stage('Build') {
+                sh "./mvnw package -DskipUnitTests=true"
+            }
+
+            stage('Unit-Tests') {
+                // TODO Unit Testing
+                // sh "./mvnw test -Dmaven.test.failure.ignore"
+            }
+
+            stage('Integration-Tests') {
+                // TODO add for OWASP ZAP version 2.7.0
+            }
+
+            stage('Deploy') {
+                if (git.isProductionBranch()) {
+                    sh "GPG_TTY=\$(tty) ./mvnw -Prelease package source:jar gpg:sign install:install deploy:deploy"
+                } else {
+                    sh "./mvnw deploy"
+                }
+
+                stage('Sonar') {
+                    withSonarQubeEnv('sonarcloud.io') {
+                        sh "./mvnw clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=hypery2k-github"
+                    }
+                }
+            }
+
+            archiveArtifacts artifacts: '*/target/*.jar'
+            junit healthScaleFactor: 1.0, testResults: '*/target/surefire-reports/TEST*.xml'
         } catch (e) {
             mail subject: "${env.JOB_NAME} (${env.BUILD_NUMBER}): Error on build", to: 'github@martinreinhardt-online.de', body: "Please go to ${env.BUILD_URL}."
             throw e
