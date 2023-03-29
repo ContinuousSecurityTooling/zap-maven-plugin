@@ -1,7 +1,5 @@
 # ZAP Maven Plugin
 
-[![Build Status](https://travis-ci.org/ContinuousSecurityTooling/zap-maven-plugin.svg?branch=master)](https://travis-ci.org/ContinuousSecurityTooling/zap-maven-plugin)
-
 > Check out the [ZAP SonarQube Plugin](https://github.com/pdsoftplan/sonar-zap)
 
 This plugin makes it easier to integrate [OWASP Zed Attack Proxy (ZAP)](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project) security tests with the application development and build process for Maven users. With this plugin, you can:
@@ -313,7 +311,7 @@ The first step to feed ZAP with your integration tests navigation is to ensure t
     // HtmlUnit
     driver = new HtmlUnitDriver();
 	((HtmlUnitDriver) driver).setProxy(ZAP_HOST, ZAP_PORT);
-	
+
 	// Firefox
 	FirefoxProfile profile = new FirefoxProfile();
 	profile.setPreference("network.proxy.type", 1); // 1 = 'Manual proxy configuration'
@@ -322,7 +320,7 @@ The first step to feed ZAP with your integration tests navigation is to ensure t
     profile.setPreference("network.proxy.http", ZAP_HOST);
     profile.setPreference("network.proxy.http_port", ZAP_PORT);
     driver = new FirefoxDriver(profile);
-	
+
 	// Chrome
 	Proxy proxy = new Proxy(); // org.openqa.selenium.Proxy
 	proxy.setHttpProxy(ZAP_HOST + ":" + ZAP_PORT);
