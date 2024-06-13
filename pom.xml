@@ -82,7 +82,7 @@
         <maven-plugin.gitflow.version>1.21.0</maven-plugin.gitflow.version>
 
         <!-- Dependencies versions -->
-        <zap-java.version>0.4.0</zap-java.version>
+        <zap-java.version>0.4.1</zap-java.version>
         <jdom.version>1.1.1</jdom.version>
         <selenium.version>2.49.1</selenium.version>
         <phantomjsdriver.version>1.2.0</phantomjsdriver.version>
