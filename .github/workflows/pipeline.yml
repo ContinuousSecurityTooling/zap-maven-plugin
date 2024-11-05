@@ -2,7 +2,7 @@ name: Build
 
 env:
   # https://github.com/actions/virtual-environments/issues/1499
-  MAVEN_CLI_OPTS: '-ntp --batch-mode --errors --fail-at-end --show-version -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -Dmaven.wagon.http.retryHandler.count=3 -Dstyle.color=always'
+  MAVEN_CLI_OPTS: '-ntp --batch-mode --errors --fail-at-end --show-version -Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -Dmaven.wagon.http.retryHandler.count=3 -Dstyle.color=always -U'
 
 on:
   # allow to manual run the action
@@ -36,7 +36,7 @@ jobs:
 
       - name: Build with Maven
         run: |
-          ./mvnw ${MAVEN_CLI_OPTS} clean verify
+          ./mvnw ${MAVEN_CLI_OPTS} clean install
           ./mvnw javadoc:javadoc
 
       - name: Publish Test Report
