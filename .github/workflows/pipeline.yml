@@ -17,4 +17,6 @@ jobs:
           java-version: 17
 
       - name: Build with Maven
-        run: ./mvnw package --batch-mode
+        run: |
+          ./mvnw clean verify -U
+          ./mvnw javadoc:javadoc
