@@ -41,9 +41,10 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:ContinuousSecurityTooling/zap-maven-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:ContinuousSecurityTooling/zap-maven-plugin.git</developerConnection>
-        <url>https://github.com/ContinuousSecurityTooling/zap-maven-plugin</url>
+        <url>https://${GITHUB_TOKEN}@github.com/ContinuousSecurityTooling/zap-maven-plugin.git</url>
+        <connection>scm:git:${project.scm.url}</connection>
+        <developerConnection>scm:git:${project.scm.url}</developerConnection>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
