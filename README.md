@@ -12,6 +12,7 @@ This plugin makes it easier to integrate [OWASP Zed Attack Proxy (ZAP)](https://
 ## Contents
 
 - [Usage](#usage)
+- [Quickstart](#quickstart)
 - [Configuration Parameters](#configuration-parameters)
 - [Authentication Strategies](#authentication-strategies)
 - [Examples](#examples)
@@ -31,7 +32,7 @@ Generally, the plugin configuration will follow the format below:
 <plugin>
     <groupId>net.continuous-security-tools</groupId>
     <artifactId>zap-maven-plugin</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.2</version>
     <configuration>
         <!-- Configuration parameters -->
     </configuration>
@@ -46,7 +47,7 @@ Generally, the plugin configuration will follow the format below:
 
 > If you want to bind the plugin execution to the build lifecycle, it is necessary to define the phase where the plugin will be executed, as well as the goal that will be executed. Optionally, the plugin can be executed by directly calling the desired goal:
 > ```
-> mvn br.com.softplan.security.zap:zap-maven-plugin:analyze
+> mvn net.continuous-security-tools:zap-maven-plugin:analyze
 > ```
 
 The main goal provided is *analyze*, responsible to execute a ZAP analysis according to the configuration parameters. However, the plugin also provides other goals for more specific situations. The list of available goals is presented bellow:
@@ -56,6 +57,32 @@ The main goal provided is *analyze*, responsible to execute a ZAP analysis accor
 - ***seleniumAnalyze***: assumes ZAP is already executing and simply runs the Active Scan, closing ZAP after the analysis. This goal is useful when there are [Selenium](http://www.seleniumhq.org) integration tests that are executed with a proxy to ZAP and the navigation done by the tests should be used instead of the Spider. More on that at [Selenium Integration](#selenium-integration).
 
 The goals that run analysis save the generated reports in the end of the plugin execution. By default, the reports are saved in the directory `target/zap-reports` within the project. The parameter *reportPath* can be used to specify another directory (absolute or relative).
+
+## Quickstart
+
+1. Adjust your `pom.xml`:
+
+```xml
+<plugin>
+    <groupId>net.continuous-security-tools</groupId>
+    <artifactId>zap-maven-plugin</artifactId>
+    <version>0.2.2</version>
+    <configuration>
+        <targetUrl>http://localhost:8080</targetUrl>
+        <zapPort>7777</zapPort>
+        <zapApiKey>S3cure!</zapApiKey>
+    </configuration>
+    <executions>
+        <execution>
+            <phase>verify</phase>
+            <goals><goal>analyze</goal></goals>
+        </execution>
+    </executions>
+</plugin>
+```
+2. Start ZAP, e.g. `docker run -u zap -p 7777:8080 -i zaproxy/zap-stable zap.sh -daemon -host 0.0.0.0 -port 8080 -config api.addrs.addr.name=.* -config api.addrs.addr.regex=true -config api.key=S3cure!`
+3. Run Application, e.g. `mvn spring-boot:run`
+4. Run ZAP Analysis: `mvn net.continuous-security-tools:zap-maven-plugin:analyze -Dzap.skip=false)`
 
 ## Configuration Parameters
 
